@@ -5,7 +5,7 @@ branches:
     - master
 build: off
 install:
-  - java -jar ./artifacts/app-card-delivery.jar &
+  - java -jar ./artifacts/app-ibank.jar &
   - chmod +x gradlew
 build_script:
   ./gradlew test -Dselenide.headless=true --info
