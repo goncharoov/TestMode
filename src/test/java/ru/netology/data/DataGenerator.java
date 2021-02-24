@@ -22,19 +22,13 @@ public class DataGenerator {
         public static AuthInfo generateActiveUser() {
             Send.makeRequest(new AuthInfo(faker.name().firstName(), faker.internet().password(), "active"));
             return new AuthInfo(faker.name().firstName(), faker.internet().password(), "active");
-//            String login = faker.name().firstName();
-//            String password = faker.internet().password();
-//            String status = "active";
-//            return new AuthInfo(login, password, status);
+
         }
 
         public static AuthInfo generateBlockedUser() {
             Send.makeRequest(new AuthInfo(faker.name().firstName(), faker.internet().password(), "blocked"));
             return new AuthInfo(faker.name().firstName(), faker.internet().password(), "blocked");
-//            String login = faker.name().firstName();
-//            String password = faker.internet().password();
-//            String status = "blocked";
-//            return new AuthInfo(login, password, status);
+
         }
 
         public static AuthInfo generateUserWithInvalidLogin () {
