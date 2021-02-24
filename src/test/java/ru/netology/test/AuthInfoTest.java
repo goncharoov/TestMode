@@ -1,12 +1,9 @@
 package ru.netology.test;
 
-import com.codeborne.selenide.Condition;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.data.DataGenerator;
 import ru.netology.data.AuthInfo;
-
-import java.time.Duration;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.withText;
@@ -23,20 +20,18 @@ class AuthInfoTest {
 
     @Test
     void shouldLoginActiveUser() {
-        AuthInfo data = DataGenerator.Registration.generateActiveUser();
-        DataGenerator.Send.setUpAll(data);
-        $("[name = login]").setValue(data.getLogin());
-        $("[name = password]").setValue(data.getPassword());
+        AuthInfo activeUser = DataGenerator.Registration.generateActiveUser();
+        $("[name = login]").setValue(activeUser.getLogin());
+        $("[name = password]").setValue(activeUser.getPassword());
         $("[data-test-id = action-login]").click();
         $(withText("Личный кабинет")).shouldBe(visible);
     }
 
     @Test
     void shouldBeInvalidUser() {
-        AuthInfo data = DataGenerator.Registration.generateBlockedUser();
-        DataGenerator.Send.setUpAll(data);
-        $("[name = login]").setValue(data.getLogin());
-        $("[name = password]").setValue(data.getPassword());
+        AuthInfo blockedUser = DataGenerator.Registration.generateBlockedUser();
+        $("[name = login]").setValue(blockedUser.getLogin());
+        $("[name = password]").setValue(blockedUser.getPassword());
         $("[data-test-id = action-login]").click();
         $("[data-test-id = error-notification]")
                 .shouldBe(visible, ofMillis(15000))
@@ -45,10 +40,9 @@ class AuthInfoTest {
 
     @Test
     void shouldNotLoginWithInvalidPassword() {
-        AuthInfo data = DataGenerator.Registration.generateUserWithInvalidPassword();
-        DataGenerator.Send.setUpAll(data);
-        $("[name = login]").setValue(data.getLogin());
-        $("[name = password]").setValue(String.valueOf("ads"));
+        AuthInfo invalidPasswordUser = DataGenerator.Registration.generateUserWithInvalidPassword();
+        $("[name = login]").setValue(invalidPasswordUser.getLogin());
+        $("[name = password]").setValue(invalidPasswordUser.getPassword());
         $("[data-test-id = action-login]").click();
         $("[data-test-id = error-notification]")
                 .shouldBe(visible, ofMillis(15000))
@@ -57,11 +51,12 @@ class AuthInfoTest {
 
     @Test
     void shouldNotLoginWithInvalidLogin() {
-        AuthInfo data = DataGenerator.Registration.generateUserWithInvalidLogin();
-        DataGenerator.Send.setUpAll(data);
-        $("[name = login]").setValue(String.valueOf("paett"));
-        $("[name = password]").setValue(data.getPassword());
+        AuthInfo invalidLoginUser = DataGenerator.Registration.generateUserWithInvalidLogin();
+        $("[name = login]").setValue(invalidLoginUser.getLogin());
+        $("[name = password]").setValue(invalidLoginUser.getPassword());
         $("[data-test-id = action-login]").click();
-        $("[data-test-id = error-notification]").shouldBe(visible);
+        $("[data-test-id = error-notification]")
+                .shouldBe(visible, ofMillis(15000))
+                .shouldHave(text("Ошибка! Неверно указан логин или пароль"));
     }
 }

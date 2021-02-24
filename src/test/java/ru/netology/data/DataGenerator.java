@@ -16,38 +16,37 @@ public class DataGenerator {
 
     public static class Registration {
 
+        public static Faker faker = new Faker(new Locale("en"));
         private Registration() {}
 
         public static AuthInfo generateActiveUser() {
-            Faker faker = new Faker(new Locale("en"));
-            String login = faker.name().firstName();
-            String password = faker.internet().password();
-            String status = "active";
-            return new AuthInfo(login, password, status);
+            Send.makeRequest(new AuthInfo(faker.name().firstName(), faker.internet().password(), "active"));
+            return new AuthInfo(faker.name().firstName(), faker.internet().password(), "active");
+//            String login = faker.name().firstName();
+//            String password = faker.internet().password();
+//            String status = "active";
+//            return new AuthInfo(login, password, status);
         }
 
         public static AuthInfo generateBlockedUser() {
-            Faker faker = new Faker(new Locale("en"));
-            String login = faker.name().firstName();
-            String password = faker.internet().password();
-            String status = "blocked";
-            return new AuthInfo(login, password, status);
+            Send.makeRequest(new AuthInfo(faker.name().firstName(), faker.internet().password(), "blocked"));
+            return new AuthInfo(faker.name().firstName(), faker.internet().password(), "blocked");
+//            String login = faker.name().firstName();
+//            String password = faker.internet().password();
+//            String status = "blocked";
+//            return new AuthInfo(login, password, status);
         }
 
         public static AuthInfo generateUserWithInvalidLogin () {
-            Faker faker = new Faker(new Locale("en"));
-            String login = faker.name().firstName();;
-            String password = faker.internet().password();
-            String status = "active";
-            return new AuthInfo("petya", password, status);
+            String login = faker.name().firstName();
+            Send.makeRequest(new AuthInfo(login, faker.internet().password(), "active"));
+            return new AuthInfo(login, faker.internet().password(), "active");
         }
 
-        public static AuthInfo generateUserWithInvalidPassword () {
-            Faker faker = new Faker(new Locale("en"));
-            String login = faker.name().firstName();
-            String password = faker.internet().password();;
-            String status = "active";
-            return new AuthInfo(login, "password" , status);
+        public static AuthInfo generateUserWithInvalidPassword() {
+            String password = faker.internet().password();
+            Send.makeRequest(new AuthInfo(faker.name().firstName(), password, "active"));
+            return new AuthInfo(faker.name().firstName(), password, "active");
         }
     }
 
@@ -60,7 +59,7 @@ public class DataGenerator {
                 .log(LogDetail.ALL)
                 .build();
 
-        public static void setUpAll(AuthInfo user) {
+        public static void makeRequest(AuthInfo user) {
             given()
                     .spec(Send.requestSpec)
                     .body(user)
