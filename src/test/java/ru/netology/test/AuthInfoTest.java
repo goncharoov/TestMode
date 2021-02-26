@@ -20,7 +20,7 @@ class AuthInfoTest {
 
     @Test
     void shouldLoginActiveUser() {
-        AuthInfo activeUser = DataGenerator.Registration.generateActiveUser();
+        AuthInfo activeUser = DataGenerator.Registration.generateUser("active");
         $("[name = login]").setValue(activeUser.getLogin());
         $("[name = password]").setValue(activeUser.getPassword());
         $("[data-test-id = action-login]").click();
@@ -28,8 +28,8 @@ class AuthInfoTest {
     }
 
     @Test
-    void shouldBeInvalidUser() {
-        AuthInfo blockedUser = DataGenerator.Registration.generateBlockedUser();
+    void shouldNotLoginWithBlockedUser() {
+        AuthInfo blockedUser = DataGenerator.Registration.generateUser("blocked");
         $("[name = login]").setValue(blockedUser.getLogin());
         $("[name = password]").setValue(blockedUser.getPassword());
         $("[data-test-id = action-login]").click();

@@ -19,16 +19,10 @@ public class DataGenerator {
         public static Faker faker = new Faker(new Locale("en"));
         private Registration() {}
 
-        public static AuthInfo generateActiveUser() {
-            Send.makeRequest(new AuthInfo(faker.name().firstName(), faker.internet().password(), "active"));
-            return new AuthInfo(faker.name().firstName(), faker.internet().password(), "active");
-
-        }
-
-        public static AuthInfo generateBlockedUser() {
-            Send.makeRequest(new AuthInfo(faker.name().firstName(), faker.internet().password(), "blocked"));
-            return new AuthInfo(faker.name().firstName(), faker.internet().password(), "blocked");
-
+        public static AuthInfo generateUser(String status) {
+            AuthInfo user = new AuthInfo(faker.name().firstName(), faker.internet().password(), status);
+            Send.makeRequest(user);
+            return user;
         }
 
         public static AuthInfo generateUserWithInvalidLogin () {
